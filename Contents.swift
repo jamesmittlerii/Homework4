@@ -1,12 +1,12 @@
 /**
- 
+
  * Homework 4
  * Jim Mittler
  * 29 August 2025
- 
+
  This program loads dog descriptions and images. Shows one image and prints
  the descriptions for the rest.
- 
+
  _Italic text_
  __Bold text__
  ~~Strikethrough text~~
@@ -87,29 +87,36 @@ func loadDogs() throws -> [String: String] {
 
 do {
 
-    /* fetch our dictionary */
-    let dogs = try loadDogs()
+    /* fetch our dictionary
+     mutable because we will delete one element in a bit
+     */
+    var dogs = try loadDogs()
 
     /* grab a random dog */
     let randomDog = dogs.randomElement()!
+
+    /* per instructions print the name and description of the random dog*/
+    print("\(randomDog.key): \(randomDog.value)\n")
 
     /* load the image - not sure why we needed the extension but we seemed to need it */
     if let image = UIImage(named: randomDog.key + ".jpg") {
         // Create an image view to display the image. Use the image size for the frame.
         let imageView = UIImageView(image: image)
-        imageView.frame = CGRect(x: 0, y: 0, width: image.size.width, height: image.size.height)  // Adjust size and position as needed
+        imageView.frame = CGRect(
+            x: 0,
+            y: 0,
+            width: image.size.width,
+            height: image.size.height
+        )  // Adjust size and position as needed
         // Add the image view to the Playground's live view
-        //PlaygroundPage.current.needsIndefiniteExecution = true
         PlaygroundPage.current.liveView = imageView
 
-        /* per the instructions loop through dogs and print if not the one with the picture
+        /* per the instructions loop through dogs and print if not the one with the picture. So remove that dog first
          we add an extra carriage return to space these out */
 
+        dogs.removeValue(forKey: randomDog.key)
         for (name, description) in dogs {
-            if name != randomDog.key {
-                print("\(name): \(description)\n")
-
-            }
+            print("\(name): \(description)\n")
         }
 
     }
